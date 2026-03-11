@@ -8,109 +8,99 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.css">
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap" rel="stylesheet">
 
     <style>
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, #1a1a1a 0%, #000000 100%);
-            font-family: 'Cairo', sans-serif;
-            color: white; overflow: hidden;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background-color: #000; font-family: 'Cairo', sans-serif;
+            display: flex; flex-direction: column; overflow: hidden;
         }
 
-        /* حاوية العنوان والحقوق */
-        .branding {
-            text-align: center; margin-bottom: 20px; z-index: 10;
+        /* شريط الحقوق العلوي */
+        .header {
+            width: 100%; padding: 10px 0; background: #000;
+            border-bottom: 2px solid #00bfff; text-align: center; z-index: 10;
         }
 
-        .branding h1 {
-            font-size: 28px; font-weight: 900; margin: 0;
-            background: linear-gradient(to right, #00bfff, #ffffff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            drop-shadow: 0 2px 10px rgba(0, 191, 255, 0.5);
+        .header h1 {
+            font-size: 20px; margin: 0; color: #fff; font-weight: 900;
         }
 
-        .branding p {
-            font-size: 18px; margin: 5px 0; color: #ff0000;
-            font-weight: bold; animation: pulse 1.5s infinite;
+        .header span { color: #00bfff; }
+
+        /* حاوية المباراة والمشغل */
+        .main-content {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; position: relative;
         }
 
-        /* حاوية المشغل في المنتصف */
-        .player-wrapper {
-            width: 90%; max-width: 900px;
-            aspect-ratio: 16 / 9;
-            background: #000;
-            border: 3px solid #333;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 0 50px rgba(0, 191, 255, 0.3);
-            position: relative;
+        .match-title {
+            margin-bottom: 10px; font-size: 18px; font-weight: bold;
+            color: #fff; background: rgba(255, 0, 0, 0.8);
+            padding: 5px 20px; border-radius: 50px; animation: blink 1s infinite;
+        }
+
+        .player-container {
+            width: 95%; max-width: 1000px; aspect-ratio: 16 / 9;
+            box-shadow: 0 0 30px rgba(0, 191, 255, 0.4);
+            border-radius: 12px; overflow: hidden; background: #000;
         }
 
         #dplayer { width: 100%; height: 100%; }
 
-        /* حقوق ثابتة داخل الواجهة */
-        .footer-rights {
-            margin-top: 20px; font-size: 16px; font-weight: 600;
-            color: rgba(255, 255, 255, 0.6);
+        /* حقوق ثابتة في الأسفل */
+        .footer-brand {
+            padding: 15px; font-size: 16px; color: #aaa; text-align: center;
         }
 
-        .footer-rights span { color: #00bfff; }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        /* لضمان تناسب الشاشات الصغيرة */
-        @media (max-width: 768px) {
-            .branding h1 { font-size: 22px; }
-            .player-wrapper { width: 95%; }
-        }
+        @keyframes blink { 0% {opacity:1} 50% {opacity:0.5} 100% {opacity:1} }
     </style>
 </head>
 <body>
 
-    <div class="branding">
-        <h1>ريال مدريد 🆚 مانشستر سيتي</h1>
-        <p>🔴 بث مباشر HD</p>
+    <div class="header">
+        <h1>عبود <span>#هاشتاج_شاهد</span></h1>
     </div>
 
-    <div class="player-wrapper">
-        <div id="dplayer"></div>
-    </div>
+    <div class="main-content">
+        <div class="match-title">مباشر: ريال مدريد × مانشستر سيتي</div>
+        
+        <div class="player-container">
+            <div id="dplayer"></div>
+        </div>
 
-    <div class="footer-rights">
-        بواسطة: <span>عبود #هاشتاج_شاهد</span>
+        <div class="footer-brand">
+            جميع الحقوق محفوظة لـ <span>عبود</span>
+        </div>
     </div>
 
     <script>
+        // الرابط الخاص بك
         const streamUrl = 'http://wjk30.tutor3.site/live/51838_.m3u8?session=fgXV65Um2lfy1XM-PnwCNI6JKBGv-7c8uR6nyqvK0yPD6645oYewQjFQ6kFRCCFO8v9weMjgiE5rg7pCM4ODC3gY8vmYU53y&location=local';
 
         const dp = new DPlayer({
             container: document.getElementById('dplayer'),
             live: true,
-            autoplay: true,
+            autoplay: true, // محاولة التشغيل فوراً
             theme: '#00bfff',
             lang: 'ar',
-            logo: 'https://cdn-icons-png.flaticon.com/512/5219/5219313.png', // أيقونة صغيرة اختيارية
             video: {
                 url: streamUrl,
                 type: 'hls'
             }
         });
 
-        // محاولة التشغيل التلقائي
+        // لضمان التشغيل المباشر وتخطي حظر المتصفح
         dp.on('canplay', function () {
             dp.play();
         });
 
-        // رسالة تنبيه إذا حظر المتصفح الصوت
-        console.log("Welcome to Abood's Live Stream");
-    </script>
+        // إذا واجه المتصفح مشكلة في التشغيل التلقائي بالصوت، سيتم كتمه ليشتغل الفيديو فوراً
+        dp.video.muted = true; 
+        dp.play();
 
+        console.log("تم تشغيل بث عبود بنجاح");
+    </script>
 </body>
 </html>
