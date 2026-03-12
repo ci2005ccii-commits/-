@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ᴛʀᴇɴᴅ ᴇᴍᴘɪʀᴇ | عبود</title>
+    <title>ᴛʀᴇɴᴅ ᴇᴍᴘɪʀᴇ |  عبود</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -172,9 +172,10 @@
 </div>
 
 <script>
-    // قائمة الأسماء المحدثة (24 اسماً)
+    // قائمة الأسماء المحدثة (26 اسماً)
     const names = [
-        "فاتن توفيق", "طيبه محمد كامل", "نور عبد الزهره", "امجد وسام", "رانيا عمار", "الحسن بسام", "بسمه", "ميرو 😅", 
+        "مرتضى علي", "بنين جليل", "فاتن توفيق", "طيبه محمد كامل", "نور عبد الزهره", 
+        "امجد وسام", "رانيا عمار", "الحسن بسام", "بسمه", "ميرو 😅", 
         "رشا احمد 💅🏻", "𝒓𝒆𝒕𝒂𝒈", "إبراهيم", "نبأ محمد خيري", 
         "زينة محمد سعدي", "شهد طه✨", "عبد الستار طلال علي", 
         "ريهام عمار", "غدير نجوان 🙈", "تبارك عبود 🌚", "فاطمه علي", 
@@ -192,7 +193,7 @@
         names.forEach((name, i) => {
             const angle = i * sliceAngle;
             ctx.beginPath();
-            // تلوين الأقسام بلونين متناوبين (أسود ورمادي غامق)
+            // تلوين الأقسام بلونين متناوبين
             ctx.fillStyle = i % 2 === 0 ? '#0a0a0a' : '#1a1a1a'; 
             ctx.moveTo(center, center);
             ctx.arc(center, center, center, angle, angle + sliceAngle);
@@ -204,7 +205,7 @@
             ctx.textAlign = "right";
             // تلوين النصوص بلونين متناوبين (أزرق وأبيض)
             ctx.fillStyle = i % 2 === 0 ? "#00f2fe" : "#ffffff";
-            ctx.font = "bold 20px Tajawal";
+            ctx.font = "bold 18px Tajawal"; // تصغير بسيط ليناسب كثرة الأسماء وطولها
             ctx.fillText(name, center - 40, 10);
             ctx.restore();
         });
