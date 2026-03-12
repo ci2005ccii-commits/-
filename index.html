@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ᴛʀᴇɴᴅ ᴇᴍᴘɪʀᴇ |  عبود</title>
+    <title>ᴛʀᴇɴᴅ ᴇᴍᴘɪʀᴇ | الإصدار الملكي</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -172,14 +172,14 @@
 </div>
 
 <script>
-    // قائمة الأسماء المحدثة (26 اسماً)
+    // قائمة الأسماء المحدثة (28 اسماً)
     const names = [
-        "مرتضى علي", "بنين جليل", "فاتن توفيق", "طيبه محمد كامل", "نور عبد الزهره", 
-        "امجد وسام", "رانيا عمار", "الحسن بسام", "بسمه", "ميرو 😅", 
-        "رشا احمد 💅🏻", "𝒓𝒆𝒕𝒂𝒈", "إبراهيم", "نبأ محمد خيري", 
-        "زينة محمد سعدي", "شهد طه✨", "عبد الستار طلال علي", 
-        "ريهام عمار", "غدير نجوان 🙈", "تبارك عبود 🌚", "فاطمه علي", 
-        "ملاك لؤي🤭", "ايه علي", "ابرار²", "مريم محمد", "عباس ماجد"
+        "وفاء كاظم", "احمد قصي", "مرتضى علي", "بنين جليل", "فاتن توفيق", 
+        "طيبه محمد كامل", "نور عبد الزهره", "امجد وسام", "رانيا عمار", "الحسن بسام", 
+        "بسمه", "ميرو 😅", "رشا احمد 💅🏻", "𝒓𝒆𝒕𝒂𝒈", "إبراهيم", 
+        "نبأ محمد خيري", "زينة محمد سعدي", "شهد طه✨", "عبد الستار طلال علي", "ريهام عمار", 
+        "غدير نجوان 🙈", "تبارك عبود 🌚", "فاطمه علي", "ملاك لؤي🤭", "ايه علي", 
+        "ابرار²", "مريم محمد", "عباس ماجد"
     ];
 
     let usedNames = [];
@@ -193,7 +193,6 @@
         names.forEach((name, i) => {
             const angle = i * sliceAngle;
             ctx.beginPath();
-            // تلوين الأقسام بلونين متناوبين
             ctx.fillStyle = i % 2 === 0 ? '#0a0a0a' : '#1a1a1a'; 
             ctx.moveTo(center, center);
             ctx.arc(center, center, center, angle, angle + sliceAngle);
@@ -203,9 +202,8 @@
             ctx.translate(center, center);
             ctx.rotate(angle + sliceAngle / 2);
             ctx.textAlign = "right";
-            // تلوين النصوص بلونين متناوبين (أزرق وأبيض)
             ctx.fillStyle = i % 2 === 0 ? "#00f2fe" : "#ffffff";
-            ctx.font = "bold 18px Tajawal"; // تصغير بسيط ليناسب كثرة الأسماء وطولها
+            ctx.font = "bold 17px Tajawal";
             ctx.fillText(name, center - 40, 10);
             ctx.restore();
         });
@@ -245,7 +243,6 @@
         const nameIndex = names.indexOf(selectedName);
         const sectionDeg = 360 / names.length;
         
-        // حساب التوقف بدقة تحت السهم الأصفر في الأعلى
         const stopAngle = 360 - (nameIndex * sectionDeg) - (sectionDeg / 2) - 90;
         const extraSpins = (Math.floor(Math.random() * 5) + 8) * 360; 
         
