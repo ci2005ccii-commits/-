@@ -2,227 +2,182 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ᴛʀᴇɴᴅ ᴇᴍᴘɪʀᴇ | عجلة الأحكام</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عبد الله زيدان | الملف الاحترافي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary: #00f2fe;
-            --secondary: #4facfe;
-            --accent: #fbc531;
-            --dark-bg: #0a0a0b;
-            --card-bg: rgba(15, 15, 15, 0.9);
+            --gold: #d4af37;
+            --deep-dark: #050505;
+            --glass: rgba(255, 255, 255, 0.05);
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        /* جعل العناصر تملأ الشاشة تماماً مع حركة دخول */
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.3s ease; }
 
-        body {
-            font-family: 'Tajawal', sans-serif;
-            background: var(--dark-bg);
-            margin: 0; min-height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-            overflow: hidden; color: white;
-        }
-
-        .bg-animate {
-            position: fixed; inset: 0; z-index: -1;
-            background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
-        }
-        .bg-animate::after {
-            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
-            opacity: 0.3; animation: stars 50s linear infinite;
-        }
-        @keyframes stars { from { background-position: 0 0; } to { background-position: 10000px 5000px; } }
-
-        #overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.95);
-            z-index: 5000; display: flex; justify-content: center; align-items: center;
-            backdrop-filter: blur(25px); transition: 1s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .welcome-card {
-            background: var(--card-bg); 
-            border: 2px solid rgba(0, 242, 254, 0.5);
-            padding: 40px 30px; border-radius: 40px; text-align: center;
-            width: 90%; max-width: 400px; 
-            box-shadow: 0 0 60px rgba(0, 242, 254, 0.3), inset 0 0 20px rgba(0, 242, 254, 0.1);
-            animation: superEntrance 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-            position: relative; overflow: hidden;
+        body, html {
+            width: 100%; height: 100%;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: #000; color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; /* لمنع التمرير الخارجي */
         }
 
-        @keyframes superEntrance {
-            0% { transform: scale(0.5) translateY(100px); opacity: 0; filter: blur(20px); }
-            100% { transform: scale(1) translateY(0); opacity: 1; filter: blur(0); }
+        .background-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 20%, #1a0b2e 0%, #000 70%);
+            z-index: -1;
         }
 
-        .main-container {
-            width: 95%; max-width: 450px; text-align: center; z-index: 10;
+        /* تأثير الحركة الجديد (الظهور الانسيابي) */
+        @keyframes revealUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        h1 {
-            font-size: 35px; font-weight: 900; margin-bottom: 30px;
-            background: linear-gradient(45deg, #fff, var(--primary), var(--accent));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        .profile-card {
+            width: 90%; max-width: 450px; background: var(--glass);
+            backdrop-filter: blur(20px); border-radius: 35px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 40px 25px; text-align: center;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.8);
+            animation: revealUp 1s ease-out forwards;
         }
 
-        .wheel-outer {
-            position: relative; width: 340px; height: 340px; margin: 0 auto 40px;
-            padding: 10px; border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            box-shadow: 0 0 50px rgba(0, 242, 254, 0.4);
-        }
-        .wheel-inner { width: 100%; height: 100%; background: #000; border-radius: 50%; position: relative; overflow: hidden; }
-        canvas { width: 100%; height: 100%; transition: transform 8s cubic-bezier(0.1, 0, 0, 1); }
-
-        .spin-button {
-            width: 100%; padding: 22px; border-radius: 25px; border: none;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            color: #000; font-size: 22px; font-weight: 900; cursor: pointer;
-            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.4); transition: 0.3s;
-        }
-        .spin-button:disabled { opacity: 0.6; cursor: not-allowed; }
-
-        #resultOverlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-            z-index: 6000; display: none; justify-content: center; align-items: center;
-            backdrop-filter: blur(12px);
-        }
-        .result-card {
-            background: rgba(15, 15, 15, 0.95); border: 2px solid var(--accent); 
-            padding: 35px 25px; border-radius: 40px; text-align: center; 
-            width: 85%; max-width: 320px; animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* تأخير ظهور العناصر لجمالية الحركة */
+        .quran-verse { 
+            font-family: 'Amiri', serif; color: var(--gold); font-size: 20px; margin-bottom: 25px; 
+            opacity: 0; animation: revealUp 0.8s ease forwards 0.3s;
         }
 
-        @keyframes bounceIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .profile-img { 
+            width: 110px; height: 110px; border-radius: 50%; border: 2px solid var(--gold); padding: 5px; margin-bottom: 15px; 
+            opacity: 0; animation: revealUp 0.8s ease forwards 0.5s;
+        }
+
+        h1 { 
+            font-size: 24px; margin: 10px 0; 
+            opacity: 0; animation: revealUp 0.8s ease forwards 0.7s;
+        }
+
+        .tagline { 
+            color: var(--gold); font-size: 13px; margin-bottom: 30px; opacity: 0.8; 
+            opacity: 0; animation: revealUp 0.8s ease forwards 0.9s;
+        }
+
+        /* الأزرار */
+        .btn-container {
+            opacity: 0; animation: revealUp 0.8s ease forwards 1.1s;
+        }
+
+        .btn {
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            width: 100%; padding: 16px; margin-bottom: 12px;
+            border-radius: 15px; border: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(255,255,255,0.03); color: #fff;
+            text-decoration: none; font-weight: 600; cursor: pointer;
+        }
+
+        .btn:hover { background: var(--gold); color: #000; transform: translateY(-3px); }
+
+        /* النوافذ المنبثقة (Modal) */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 1000; backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            background: #0d0d0f; width: 90%; max-width: 500px;
+            margin: 5vh auto; padding: 30px; border-radius: 25px;
+            border: 1px solid var(--gold); position: relative;
+            text-align: right; overflow-y: auto; max-height: 85vh;
+        }
+
+        .close { position: absolute; left: 20px; top: 15px; color: var(--gold); cursor: pointer; font-size: 28px; }
+
+        .info-block { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .info-block h4 { color: var(--gold); margin: 0 0 10px 0; font-size: 17px; display: flex; align-items: center; gap: 8px; }
+        .info-block p { font-size: 13.5px; color: #ccc; line-height: 1.7; margin: 0; }
+
+        .stat-badge { background: rgba(212, 175, 55, 0.1); color: var(--gold); padding: 2px 8px; border-radius: 5px; font-size: 11px; margin-top: 5px; display: inline-block; }
 
     </style>
 </head>
 <body>
 
-<div class="bg-animate"></div>
+    <div class="background-canvas"></div>
 
-<div id="overlay">
-    <div class="welcome-card">
-        <h2>جاهزين للأحكام؟ 🔥</h2>
-        <p>الأسماء كلها موجودة.. اللي تطلع عليه العجلة لازم ينفذ الحكم بدون اعتراض! 😉✨</p>
-        <button class="spin-button" style="padding: 18px; font-size: 20px;" onclick="closeWelcome()">ابدأ اللعب الآن 🚀</button>
-    </div>
-</div>
+    <div class="profile-card">
+        <div class="quran-verse">"وَقُل رَّبِّ زِدْنِي عِلْمًا"</div>
+        <img src="https://files.catbox.moe/iz3vd1.jpg" alt="عبد الله زيدان" class="profile-img">
+        <h1>عبدالله زيدان</h1>
+        <div class="tagline">مشرف محتوى رقمي @ Shahid | مطور أنظمة</div>
 
-<div id="resultOverlay">
-    <div class="result-card">
-        <div style="font-size: 14px; color: var(--primary); letter-spacing: 2px; margin-bottom: 15px;">الضحية المختارة</div>
-        <div style="font-size: 12px; color: #aaa; margin-bottom: 5px;">وقع الاختيار على:</div>
-        <span class="res-name" id="resName" style="font-size: 32px; font-weight: 900; background: linear-gradient(to right, var(--accent), #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: block; margin-bottom: 25px;">غير معروف</span>
-        <div style="color: #fff; font-size: 14px; margin-bottom: 25px; border-top: 1px solid rgba(255,255,255,0.1); pt-15px; padding-top: 15px;">
-            يلا بطل.. نفذ الحكم وسوي اللي عليك! 😂⚖️
-        </div>
-        <button style="background: var(--primary); color: black; padding: 12px 40px; border-radius: 15px; font-weight: 900; cursor: pointer; border: none; width: 100%;" onclick="closeResult()">متابعة اللعب</button>
-    </div>
-</div>
-
-<div class="main-container">
-    <h1>عجلة أحكام ميرو</h1>
-
-    <div class="wheel-outer">
-        <div class="pointer" style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 40px; z-index: 100;">
-            <svg viewBox="0 0 30 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M15 40L0 0H30L15 40Z" fill="#fbc531"/>
-            </svg>
-        </div>
-        <div class="wheel-inner">
-            <canvas id="wheel" width="800" height="800"></canvas>
+        <div class="btn-container">
+            <a href="https://t.me/zczt0" class="btn"><i class="fab fa-telegram-plane"></i> مراسلة تلجرام</a>
+            <button class="btn" onclick="openModal('workModal')"><i class="fas fa-folder-open"></i> سجل الأعمال والخبرات</button>
+            <button class="btn" onclick="openModal('gitModal')"><i class="fab fa-github"></i> مستودع GitHub</button>
         </div>
     </div>
 
-    <button id="spinBtn" class="spin-button" onclick="startSpin()">فرّ العجلة وشوف الضحية 🔥</button>
-    <p style="margin-top: 30px; font-size: 12px; color: #555;">حقوق التصميم محفوظة لـ عبود</p>
-</div>
+    <div id="workModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('workModal')">&times;</span>
+            <h3 style="text-align: center; color: var(--gold); margin-bottom: 30px;">السجل المهني الكامل</h3>
+            
+            <div class="info-block">
+                <h4><i class="fas fa-tv"></i> الإشراف التقني في منصة شاهد</h4>
+                <p>أتولى مسؤولية إدارة تدفق المحتوى الرقمي عبر المنصة، ويشمل ذلك رفع المسلسلات والبرامج الحصرية بجودات متعددة (4K/Full HD) وضمان توافقها مع خوارزميات البث المباشر.</p>
+                <span class="stat-badge">Content Management</span>
+            </div>
 
-<script>
-    const names = [
-        "دينا مؤيد", "Adyan", "زين العابدين", "وفاء كاظم", "احمد قصي", 
-        "مرتضى علي", "بنين جليل", "فاتن توفيق", "طيبه محمد كامل", "نور عبد الزهره", 
-        "امجد وسام", "رانيا عمار", "الحسن بسام", "بسمه", "ميرو 😅", 
-        "رشا احمد 💅🏻", "𝒓𝒆𝒕𝒂𝒈", "إبراهيم", "نبأ محمد خيري", "زينة محمد سعدي", 
-        "شهد طه✨", "عبد الستار طلال علي", "ريهام عمار", "غدير نجوان 🙈", "تبارك عبود 🌚", 
-        "فاطمه علي", "ملاك لؤي🤭", "ايه علي", "ابرار²", "مريم محمد", "عباس ماجد"
-    ];
+            <div class="info-block">
+                <h4><i class="fas fa-cogs"></i> أتمتة عمليات النشر</h4>
+                <p>قمت بتطوير أدوات داخلية تساعد في جدولة الحلقات آلياً وتدقيق البيانات الوصفية (Metadata) للمحتوى، مما ساعد في تسريع توفر الحلقات للمشتركين بنسبة 30%.</p>
+                <span class="stat-badge">Automation Specialist</span>
+            </div>
 
-    let usedNames = [];
-    const canvas = document.getElementById('wheel');
-    const ctx = canvas.getContext('2d');
-    const center = 400;
-    const sliceAngle = (2 * Math.PI) / names.length;
-    let currentRotation = 0;
+            <div class="info-block">
+                <h4><i class="fas fa-shield-alt"></i> تحسين جودة البث (QA)</h4>
+                <p>متابعة تقارير الأداء الفني للبث عبر الأجهزة المختلفة (Smart TV, iOS, Android) وحل المشاكل التقنية التي قد تعيق تجربة المستخدم أثناء المشاهدة.</p>
+            </div>
 
-    function draw() {
-        names.forEach((name, i) => {
-            const angle = i * sliceAngle;
-            ctx.beginPath();
-            ctx.fillStyle = i % 2 === 0 ? '#0a0a0a' : '#1a1a1a'; 
-            ctx.moveTo(center, center);
-            ctx.arc(center, center, center, angle, angle + sliceAngle);
-            ctx.fill();
+            <div class="info-block">
+                <h4><i class="fas fa-code"></i> تطوير الأنظمة المساعدة</h4>
+                <p>بناء واجهات برمجية مخصصة لتنظيم قواعد بيانات المحتوى وتسهيل الوصول السريع للمعلومات التقنية للمسلسلات الضخمة.</p>
+            </div>
+        </div>
+    </div>
 
-            ctx.save();
-            ctx.translate(center, center);
-            ctx.rotate(angle + sliceAngle / 2);
-            ctx.textAlign = "right";
-            ctx.fillStyle = i % 2 === 0 ? "#00f2fe" : "#ffffff";
-            // تم تصغير الخط قليلاً ليتناسب مع زيادة عدد الأسماء
-            ctx.font = "bold 16px Tajawal";
-            ctx.fillText(name, center - 40, 10);
-            ctx.restore();
-        });
-        ctx.beginPath();
-        ctx.arc(center, center, 20, 0, Math.PI * 2);
-        ctx.fillStyle = "#fff";
-        ctx.fill();
-    }
-    draw();
+    <div id="gitModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('gitModal')">&times;</span>
+            <h3 style="text-align: center; color: var(--gold); margin-bottom: 30px;">عالم GitHub الخاص بي</h3>
+            
+            <div class="info-block">
+                <h4><i class="fas fa-code-branch"></i> فلسفة التطوير</h4>
+                <p>أعتبر حسابي على GitHub هو "المختبر" الذي أقوم فيه بتحويل الأفكار إلى أكواد برمجية. هنا أقوم بتوثيق كل سطر برمجي أكتبه لضمان استمرارية المشاريع وتطويرها المستقبلي.</p>
+            </div>
 
-    function closeWelcome() {
-        const overlay = document.getElementById('overlay');
-        overlay.style.transform = 'translateY(-100%) scale(1.2)';
-        overlay.style.opacity = '0';
-        setTimeout(() => overlay.style.display = 'none', 1000);
-    }
+            <div class="info-block">
+                <h4><i class="fas fa-history"></i> التحكم في الإصدارات (Git)</h4>
+                <p>أستخدم أدوات التتبع المتقدمة لضمان أمان الأكواد؛ حيث يتيح لي GitHub العودة لأي نسخة سابقة من مشاريعي وحمايتها من الضياع، مع تنظيم "المستودعات" بشكل يسهل على المطورين الآخرين فهم جودة عملي.</p>
+                <span class="stat-badge">Version Control</span>
+            </div>
 
-    function startSpin() {
-        const btn = document.getElementById('spinBtn');
-        btn.disabled = true;
+            <div class="info-block">
+                <h4><i class="fas fa-users"></i> التعاون والنمو التقني</h4>
+                <p>من خلال المنصة، أتابع أحدث التقنيات العالمية في مجال "Backend" و"Frontend"، وأساهم في فهم الأكواد المفتوحة المصدر لدمج أفضل الممارسات البرمجية في عملي اليومي.</p>
+            </div>
 
-        if (usedNames.length === names.length) {
-            usedNames = [];
-        }
+            <a href="#" class="btn" style="background: var(--gold); color: #000; margin-top: 20px;">زيارة الحساب الرسمي</a>
+        </div>
+    </div>
 
-        let availableNames = names.filter(n => !usedNames.includes(n));
-        let selectedName = availableNames[Math.floor(Math.random() * availableNames.length)];
-        usedNames.push(selectedName);
-
-        const nameIndex = names.indexOf(selectedName);
-        const sectionDeg = 360 / names.length;
-        
-        const stopAngle = 360 - (nameIndex * sectionDeg) - (sectionDeg / 2) - 90;
-        const extraSpins = (Math.floor(Math.random() * 5) + 10) * 360; 
-        
-        currentRotation += extraSpins + (stopAngle - (currentRotation % 360) + 360) % 360;
-
-        canvas.style.transform = `rotate(${currentRotation}deg)`;
-
-        setTimeout(() => {
-            btn.disabled = false;
-            document.getElementById('resName').innerText = selectedName;
-            document.getElementById('resultOverlay').style.display = 'flex';
-        }, 8500);
-    }
-
-    function closeResult() { 
-        document.getElementById('resultOverlay').style.display = 'none'; 
-    }
-</script>
-
+    <script>
+        function openModal(id) { document.getElementById(id).style.display = "block"; }
+        function closeModal(id) { document.getElementById(id).style.display = "none"; }
+        window.onclick = function(event) { if (event.target.className === 'modal') { event.target.style.display = "none"; } }
+    </script>
 </body>
 </html>
